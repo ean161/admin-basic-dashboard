@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import useUserList from "@/hooks/useUserList";
 import { flexRender } from "@tanstack/react-table";
@@ -12,12 +13,30 @@ export default function UserPage() {
 
     return (
         <div className="w-full">
-            <Input
-                placeholder="Search user..."
-                value={table.getState().globalFilter ?? ""}
-                onChange={(e) => table.setGlobalFilter(e.target.value)}
-                className="max-w-sm"
-            />
+            <div className="flex space-x-2">
+                <Input
+                    placeholder="Search"
+                    value={table.getState().globalFilter ?? ""}
+                    onChange={(e) => table.setGlobalFilter(e.target.value)}
+                    className="max-w-sm"
+                />
+                <Select
+                    value={(table.getColumn("role")?.getFilterValue() as string) ?? "ALL"}
+                    onValueChange={(value) => table.getColumn("role")?.setFilterValue(value === "ALL"
+                        ? undefined
+                        : value)}>
+                    <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Filter by role" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectGroup>
+                            <SelectItem value="ALL">All</SelectItem>
+                            <SelectItem value="USER">User</SelectItem>
+                            <SelectItem value="ADMIN">Admin</SelectItem>
+                        </SelectGroup>
+                    </SelectContent>
+                </Select>
+            </div>
             <Table className="w-full">
                 <TableHeader>
                     {table.getHeaderGroups().map((headerGroup) => (
@@ -57,9 +76,8 @@ export default function UserPage() {
                         <TableRow>
                             <TableCell
                                 colSpan={columns.length}
-                                className="h-24 text-center"
-                            >
-                                No results.
+                                className="h-24 text-center">
+                                No results
                             </TableCell>
                         </TableRow>
                     )}

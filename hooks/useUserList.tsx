@@ -4,7 +4,6 @@ import { Badge } from "@/components/ui/badge";
 import { UsersContext } from "@/contexts/UsersContext";
 import { User } from "@/types/User";
 import {
-    flexRender,
     getCoreRowModel,
     getFilteredRowModel,
     getPaginationRowModel,
@@ -12,8 +11,6 @@ import {
     useReactTable,
     type ColumnDef,
     type ColumnFiltersState,
-    type SortingState,
-    type VisibilityState,
 } from "@tanstack/react-table";
 import { useContext, useState } from "react";
 
@@ -69,6 +66,7 @@ const columns: ColumnDef<User>[] = [
 export default function UserPage() {
     const list = useContext(UsersContext)?.userList;
     const [search, setSearch] = useState("");
+    const [filter, setFilter] = useState<ColumnFiltersState>([]);
 
     const table = useReactTable({
         data: list ?? [],
@@ -78,9 +76,10 @@ export default function UserPage() {
         getSortedRowModel: getSortedRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
         onGlobalFilterChange: setSearch,
-        globalFilterFn: "includesString",
+        onColumnFiltersChange: setFilter,
         state: {
             globalFilter: search,
+            columnFilters: filter
         }
     });
 
