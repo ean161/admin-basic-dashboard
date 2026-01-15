@@ -1,4 +1,4 @@
-# Admin basic dashboard
+# [Admin basic dashboard](https://admin-basic-dashboard.vercel.app)
 This project is based on a Software Developer internship at BIWOCO company, week 2 progress assignment
 
 ## Tech stack
