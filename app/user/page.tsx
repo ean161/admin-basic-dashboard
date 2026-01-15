@@ -13,7 +13,7 @@ export default function UserPage() {
 
     return (
         <div className="w-full">
-            <div className="flex space-x-2">
+            <div className="md:flex md:space-x-2 space-y-2">
                 <Input
                     placeholder="Search"
                     value={table.getState().globalFilter ?? ""}
